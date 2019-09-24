@@ -19,12 +19,12 @@ namespace lap_1._2._3
 
         public override string ToString()
         {
-            string gradeComment = GetGradeComment();
+            string gradeComment = studentAssessment();
 
             return $"{name} is {age} years old. {gradeComment}";
         }
 
-        private string GetGradeComment()
+        private string studentAssessment()
         {
             if (grade >= 8)
             {
@@ -40,7 +40,7 @@ namespace lap_1._2._3
             }
             else
             {
-                return "Very nice person.";
+                return "Not good student.";
             }
         }
     }
@@ -53,17 +53,18 @@ namespace lap_1._2._3
             this.students = new Dictionary<string, Student>();
         }
 
-        public void ParseCommand(string command)
+        public void MenuCommand(string command)
         {
-            var commandArgs = command.Split();
 
-            switch (commandArgs[0])
+            var commandArray = command.Split(' ');
+            Console.WriteLine(commandArray[0]);
+            switch (commandArray[0])
             {
                 case "Create":
-                    AddStudent(commandArgs);
+                    AddStudent(commandArray);
                     break;
                 case "Show":
-                    ShowStudent(commandArgs);
+                    ShowStudent(commandArray);
                     break;
                 case "Exit":
                     Environment.Exit(0);
@@ -71,9 +72,9 @@ namespace lap_1._2._3
             }
         }
 
-        private void ShowStudent(string[] commandArgs)
+        private void ShowStudent(string[] commandArray)
         {
-            string name = commandArgs[1];
+            string name = commandArray[1];
 
             if (students.ContainsKey(name))
             {
@@ -82,19 +83,44 @@ namespace lap_1._2._3
             }
         }
 
-        private void AddStudent(string[] commandArgs)
+        private void AddStudent(string[] commandArray)
         {
-            string name = commandArgs[1];
+            string name = commandArray[1];
             if (!students.ContainsKey(name))
             {
-                int age = int.Parse(commandArgs[2]);
-                double grade = double.Parse(commandArgs[3]);
+                int age = int.Parse(commandArray[2]);
+                double grade = double.Parse(commandArray[3]);
 
                 Student student = new Student(name, age, grade);
                 students.Add(name, student);
             }
         }
     }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            StudentSystem system = new StudentSystem();
 
+            while (true)
+            {
+                Console.WriteLine("Please choose commamd u want to");
+                Console.WriteLine("1. Create student");
+                Console.WriteLine("2. SHow student");
+                int choosecommand = Int32.Parse(Console.ReadLine());
+                switch (choosecommand)
+                {
+                    case 1:
+                        Console.WriteLine("Please enter like fomat: Create Name Age Grade");
+                        break;
+                    case 2:
+                        Console.WriteLine("Please enter like format: Show Name");
+                        break;
+                }
+                string command = Console.ReadLine();
+                system.MenuCommand(command);
+            }
+        }
+    }
 
 }
